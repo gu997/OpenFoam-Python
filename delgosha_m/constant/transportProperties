@@ -1,0 +1,79 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1812                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      transportProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+phases (water vapour);
+
+phaseChangeTwoPhaseMixture  Kunz;
+
+pSat            2000;   // Saturation pressure 290.65 K
+
+sigma           0.071995;
+
+water
+{
+    transportModel  Newtonian;
+    nu              1.0676e-06;
+    rho             998;
+}
+
+vapour
+{
+    transportModel  Newtonian;
+    nu              6.3394e-04;
+    rho             0.014929;
+}
+
+KunzCoeffs
+{
+    UInf            7.2;
+    tInf            0.034; // L = 0.1016 m
+    Cc              4328;
+    Cv              3323;
+}
+
+MerkleCoeffs
+{
+    UInf            7.04;
+    tInf            0.034;  // L = 0.24 m
+    Cc              80;
+    Cv              1e-03;
+}
+
+SchnerrSauerCoeffs
+{
+    n               1.6e+15;
+    dNuc            2.0e-06;
+    Cc              5;
+    Cv              100;
+}
+SALCoeffs
+{
+    n               1e+12;
+    dNuc            2.0e-06;
+   // Cc              1;
+   // Cv              1;
+}
+ZwartCoeffs
+{
+    rNuc              5e-4;
+    Rb           2.0e-06; //-06
+    Cc             0.005; //0.005
+    Cv              300;  //300
+}
+
+
+
+// ************************************************************************* //

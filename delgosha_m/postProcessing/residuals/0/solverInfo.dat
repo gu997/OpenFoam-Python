@@ -1,0 +1,9 @@
+# Solver information
+# Time        	U_solver      	Ux_initial    	Ux_final      	Ux_iters      	Uy_initial    	Uy_final      	Uy_iters      	U_converged   	p_rgh_solver  	p_rgh_initial 	p_rgh_final   	p_rgh_iters   	p_rgh_converged
+1.25e-07      	DILUPBiCGStab	1.566030e-03	3.861320e-11	1	3.826500e-03	1.242050e-10	1	false	GAMG	1.660770e-08	3.956580e-09	1	true
+2.5e-07       	DILUPBiCGStab	1.228450e-04	5.350650e-12	1	4.504170e-04	8.512380e-12	1	false	GAMG	3.225350e-07	2.768190e-08	1	true
+3.75e-07      	DILUPBiCGStab	8.167200e-05	2.804600e-12	1	2.495780e-04	4.343820e-12	1	false	GAMG	3.579230e-07	2.804430e-08	1	true
+5e-07         	DILUPBiCGStab	6.849110e-05	6.503920e-13	1	2.011090e-04	1.233340e-12	1	false	GAMG	6.949680e-07	3.987690e-08	1	true
+6.66667e-07   	DILUPBiCGStab	3.458670e-05	7.521860e-13	1	9.399260e-05	1.335720e-12	1	false	GAMG	1.499770e-06	8.740510e-08	1	true
+8.33333e-07   	DILUPBiCGStab	2.022130e-05	5.482550e-13	1	5.712000e-05	6.571740e-13	1	false	GAMG	1.757600e-06	7.867850e-08	1	true
+1e-06         	DILUPBiCGStab	1.636660e-05	5.409330e-13	1	3.877010e-05	6.509040e-13	1	false	GAMG	1.408540e-06	1.057480e-07	1	true

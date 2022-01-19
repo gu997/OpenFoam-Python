@@ -1,0 +1,226 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1812                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     interPhaseChangeFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.000001;
+
+deltaT          1e-7;
+
+writeControl   adjustableRunTime;
+
+writeInterval    0.0000005;
+
+purgeWrite      8;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.8;
+
+maxAlphaCo      0.1;
+
+
+libs ("libmyCompressibleTurbulenceModels.so");
+libs ("libmyIncompressibleTurbulenceModels.so");
+
+functions
+
+{
+  yPlus
+    {  
+         type            yPlus;
+         libs            ("libfieldFunctionObjects.so");
+         writeControl   writeTime; 
+
+    }
+  
+   libs ("libmyIncompressibleTurbulenceModels.so");
+    residuals
+    {
+         type            solverInfo;
+         libs            ("libutilityFunctionObjects.so");
+         fields          (p_rgh U);
+         writeResidualFields  no;
+         writeControl    timeStep;
+         writeInterval   600;
+    }
+      inMassFlow
+    {
+        type            surfaceFieldValue;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+
+        //writeControl     outputTime;
+	writeControl   timeStep;
+	writeInterval  100;
+        log             true;
+        writeFields     false;
+        regionType          patch;
+        name      inlet;
+	operation       sum;
+        fields
+        (
+            phi
+        );
+    }
+  probes
+{
+// Where to load it from
+functionObjectLibs ( "libsampling.so" );
+
+type        probes;
+	writeControl   timeStep;
+	writeInterval  10;
+
+// Name of the directory for probe data
+name        probes;
+
+// Fields to be probed
+fields (
+        p 
+        U 
+       );
+
+probeLocations
+(
+   ( -0.15 0.025 0 )         // INLET
+  
+);
+}
+outMassFlow
+    {
+        type            surfaceFieldValue;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+	//writeControl     outputTime;
+	writeControl   timeStep;
+	writeInterval  100;
+        log             yes;
+        writeFields     false;
+        regionType          patch;
+        name      outlet;
+	operation       sum;
+        fields
+        (
+          phi  
+        );
+    }
+
+    pressure2
+{
+    // Mandatory entries
+    type            pressure;
+    libs            (fieldFunctionObjects);
+    mode            total;
+
+    // Optional entries
+    U               U;
+    rho             rho_0;
+    rho_0           1.0;
+    pRef            1.0;
+
+    // Optional (inherited) entries
+    result          totalP;
+    enabled         true;
+    log             true;
+    writeControl    writeTime;
+    }
+
+
+
+  minmaxdomain
+    {
+	type fieldMinMax;
+	functionObjectLibs ("libfieldFunctionObjects.so");
+	enabled true;
+	mode component;
+	writeControl timeStep;
+	writeInterval 100;
+	log true;
+	fields (p_rgh U k omega);
+    }
+
+rho
+  {
+    type     writeRegisteredObject;
+    functionObjectLibs   ("libfunctionObjects.so");
+    objectNames
+    (
+      rho
+    );
+  }
+   
+
+fieldAverage1
+{
+type fieldAverage;
+functionObjectLibs ( "libfieldFunctionObjects.so" );
+enabled true;
+outputControl outputTime;
+fields
+(
+U
+{
+mean on;
+prime2Mean on;
+base time;
+}
+
+alpha.water
+{
+mean on;
+prime2Mean on;
+base time;
+}
+totalP
+{
+mean on;
+prime2Mean on;
+base time;
+}
+k
+{
+mean on;
+prime2Mean on;
+base time;
+}
+
+p
+{
+mean on;
+prime2Mean on;
+base time;
+}
+);
+}
+}
+// ************************************************************************* //
